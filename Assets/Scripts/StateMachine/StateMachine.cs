@@ -6,10 +6,10 @@ public class StateMachine
 {
   protected State _currentState;
 
-  public void Initial(State initialState)
+  public void Initial(State initialState, IStateParam stateParam = null)
   {
-    initialState.EnterState();
     _currentState = initialState;
+    initialState.EnterState(stateParam);
   }
 
   public void ChangeState(State state, IStateParam stateParams = null)
@@ -19,8 +19,8 @@ public class StateMachine
       _currentState.ExitState();
     }
 
-    state.EnterState(stateParams);
     _currentState = state;
+    state.EnterState(stateParams);
   }
 
   public void FrameUpdate()

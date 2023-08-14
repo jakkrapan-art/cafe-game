@@ -4,11 +4,11 @@ using UnityEngine;
 
 public abstract class TileCommand : ICommand
 {
-  protected CharacterEntity _entity;
+  protected CharacterEntity _character;
 
   public TileCommand(CharacterEntity entity)
   {
-    _entity = entity;
+    _character = entity;
   }
 
   public abstract void Execute();

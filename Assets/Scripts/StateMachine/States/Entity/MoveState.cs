@@ -6,20 +6,22 @@ using UnityEngine;
 public struct MoveStateParam : IStateParam
 {
   public Tile target;
-
-  public MoveStateParam(Tile target)
+  public Action onTargetReached;
+  public MoveStateParam(Tile target, Action onTargetReached = null)
   {
     this.target = target;
+    this.onTargetReached = onTargetReached;
   }
 }
 
-public class MoveState : State
+public class MoveState : CharacterState
 {
   private Tile _target;
   private float _moveSpeed;
+  private MoveStateParam param;
 
   private bool _isMoving = false;
-  public MoveState(Entity entity, StateMachine stateMachine, float speed) : base(entity, stateMachine)
+  public MoveState(StateMachine stateMachine, CharacterEntity character, float speed) : base(stateMachine, character)
   {
     _moveSpeed = speed;
   }
@@ -27,8 +29,12 @@ public class MoveState : State
   public override void EnterState(IStateParam param)
   {
     base.EnterState(param);
-    _target = ((MoveStateParam)param).target;
 
+    _character.CurrentTile.SetWalkable(true);
+
+    this.param = (MoveStateParam)param;
+    _target = this.param.target;
+    _target.SetWalkable(false);
     _isMoving = true;
   }
 
@@ -39,24 +45,27 @@ public class MoveState : State
 
   public override void FrameUpdate()
   {
-    base.FrameUpdate();
-
     if(!_isMoving)
     {
-      _entity.SetCurrentTile(_target);
-      _stateMachine.ChangeState(((CharacterEntity)_entity).IdleState);
+      _character.SetCurrentTile(_target);
+
+      if (param.onTargetReached != null)
+      {
+        param.onTargetReached.Invoke();
+      }
+      else
+      {
+        _stateMachine.ChangeState(_character.IdleState);
+      }
     }
   }
 
   public override void PhysicsUpdate()
   {
-    base.PhysicsUpdate();
-
     var targetPos = GridHelper.Instance.GetCenterCellPosition(_target.Cell);
-
-    if(!Mathf.Approximately(Vector3.Distance(_entity.transform.position,  targetPos), 0))
+    if(!Mathf.Approximately(Vector3.Distance(_character.transform.position,  targetPos), 0))
     {
-      _entity.MoveToTarget(targetPos, _moveSpeed);
+      _character.MoveToTarget(targetPos, _moveSpeed);
     }
     else
     {

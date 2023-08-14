@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IdleState : State
+public class IdleState : CharacterState
 {
-  private float _duration = 0.5f;
+  private float _duration = 4f;
   private float _start = 0;
-  public IdleState(Entity entity, StateMachine stateMachine) : base(entity, stateMachine)
+  public IdleState(StateMachine stateMachine, CharacterEntity character) : base(stateMachine, character)
   {
   }
 
@@ -23,11 +23,12 @@ public class IdleState : State
 
     if(Time.time >= _start + _duration)
     {
-      Tile tile = _entity.CurrentTile;
-      int random = Random.Range(0, tile.AdjacentTiles.Count);
-      Tile target = tile.GetAdjacentTile(random);
+      Tile target = _character.Building.GetRandomTile();;
 
-      if(target != null) _stateMachine.ChangeState(((CharacterEntity)_entity).MoveState, new MoveStateParam(target));
+      if(target != null)
+      {
+        _stateMachine.ChangeState(_character.FindPathState, new FindPathStateParam(target));
+      }
     }
   }
 }

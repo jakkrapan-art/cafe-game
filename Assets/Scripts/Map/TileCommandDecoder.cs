@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class TileCommandDecoder
 {
-  private CharacterEntity _entity;
+  private CharacterEntity _character;
   public TileCommandDecoder(CharacterEntity entity)
   {
-    _entity = entity;
+    _character = entity;
   }
 
   public TileCommand Decode(Tile tile)
@@ -15,8 +15,19 @@ public class TileCommandDecoder
     switch(tile) 
     {
       case NormalTile normal:
-        return new MoveToTargetCmd(_entity, normal);
+        return new MoveToTargetCmd(_character, normal);
       default: return null;
     }
+  }
+
+  public List<TileCommand> Decode(List<Tile> tiles)
+  {
+    List<TileCommand> commands = new List<TileCommand>();
+    foreach (Tile tile in tiles) 
+    {
+      var command = Decode(tile);
+      if (command != null) commands.Add(command);
+    }
+    return commands;
   }
 }

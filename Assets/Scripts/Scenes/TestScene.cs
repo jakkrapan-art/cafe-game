@@ -16,8 +16,14 @@ public class TestScene : SceneBase
   {
     _building = Building.Create(0, 0, 10, 10, testFloorTile);
 
-    var tile = _building.GetTile(new Vector3Int(0, 0));
-    _building.SpawnCharacter(_characterEntity, tile);
+    int spawnCount = 0;
+    do
+    {
+      var tile = _building.GetRandomTile();
+      if (tile is NormalTile == false || !tile.Walkable) continue;
+      _building.SpawnCharacter(_characterEntity, tile);
+      spawnCount++;
+    } while (spawnCount < 5);
   }
 
   protected override void SetupCamera()

@@ -12,39 +12,43 @@ public static class TileHelper
 
     queue.Enqueue(from);
     parentDict.Add(from, null);
-    
-    while(queue.Count > 0)
+
+    while (queue.Count > 0)
     {
       Tile current = queue.Dequeue();
+
+      if (current.Equals(target))
+      {
+        visited.Push(current);
+        break;
+      }
+
       visited.Push(current);
 
       foreach (var adjacent in current.AdjacentTiles)
       {
-        if(adjacent.Equals(target))
-        {
-          visited.Push(adjacent);
-          break;
-        }
-
-        if (visited.Contains(adjacent)) continue;
+        if (visited.Contains(adjacent) || parentDict.ContainsKey(adjacent) || !adjacent.Walkable) continue;
 
         parentDict.Add(adjacent, current);
         queue.Enqueue(adjacent);
       }
     }
 
-    if (!visited.Contains(target)) return null;
+    if (!parentDict.ContainsKey(target)) return null;
+
+    from.SetWalkable(true);
+    target.SetWalkable(false);
 
     List<Tile> path = new List<Tile>();
     Tile tile = visited.Pop();
+    path.Add(tile);
     while(tile != null)
     {
       path.Add(tile);
       tile = parentDict[tile];
-
-      if (tile == null) return null;
     }
 
+    if (path.Contains(from)) path.Remove(from);
     path.Reverse();
     return path;
   }

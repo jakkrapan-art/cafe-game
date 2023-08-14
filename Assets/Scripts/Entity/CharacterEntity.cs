@@ -6,7 +6,9 @@ public class CharacterEntity : Entity
 {
   [field: SerializeField] public IdleState IdleState { get; private set; }
   [field: SerializeField] public MoveState MoveState { get; private set; }
+  [field: SerializeField] public FindPathState FindPathState { get; private set; }
 
+  public Building Building { get; private set; }
   private Vector3 _targetPos = default;
   public Vector3 GetTargetPosition() => _targetPos;
 
@@ -14,14 +16,14 @@ public class CharacterEntity : Entity
   {
     StateMachine = new StateMachine();
 
-    IdleState = new IdleState(this, StateMachine);
-    MoveState = new MoveState(this, StateMachine, 0.12f);
+    IdleState = new IdleState(StateMachine, this);
+    MoveState = new MoveState(StateMachine, this, 0.12f);
+    FindPathState = new FindPathState(StateMachine, this);
 
     StateMachine.Initial(IdleState);
   }
 
-  public override void SetCurrentTile(Tile tile)
-  {
-    _currentTile = tile;
-  }
+  public void SetBuilding(Building building) => Building = building;
+
+  public override void SetCurrentTile(Tile tile) => _currentTile = tile;
 }

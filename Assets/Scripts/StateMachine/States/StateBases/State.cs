@@ -6,12 +6,10 @@ public interface IStateParam { }
 
 public class State
 {
-  protected Entity _entity;
   protected StateMachine _stateMachine;
 
-  public State(Entity entity, StateMachine stateMachine)
+  public State(StateMachine stateMachine)
   {
-    _entity = entity;
     _stateMachine = stateMachine;
   }
 

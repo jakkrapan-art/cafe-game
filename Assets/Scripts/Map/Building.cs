@@ -52,6 +52,7 @@ public class Building : MonoBehaviour
     var spawned = Instantiate(character, center, Quaternion.identity);
     _entities.Add(spawned);
     spawned.SetCurrentTile(tile);
+    spawned.SetBuilding(this);
   }
 
   private void SetPosition(Vector2Int position)
@@ -59,28 +60,6 @@ public class Building : MonoBehaviour
     _position = position;
   }
 
-  /*public void AddConstructors(BuildingConstructor constructor) 
-  {
-    if (_constructors.Contains(constructor)) return;
-
-    var tiles = constructor.Build(GridHelper.Instance.WorldToCell(constructor.Position));
-    _tiles.AddRange(tiles);
-
-    _constructors.Add(constructor);
-  }
-
-  public void RemoveConstructors(BuildingConstructor constructor)
-  {
-    if(!_constructors.Contains(constructor)) return;
-
-    var tiles = constructor.Remove();
-    foreach (var tile in tiles)
-    {
-      if(_tiles.Contains(tile)) _tiles.Remove(tile);
-    }
-
-    _constructors.Remove(constructor);
-  }*/
   public Tile GetTile(Vector3Int cell)
   {
     if (_tiles.TryGetValue(cell, out Tile tile)) return tile;
