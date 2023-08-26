@@ -17,7 +17,7 @@ public class FindPathState : CharacterState
   private TileCommandDecoder _tileDecoder;
   private Queue<Tile> _path = new Queue<Tile>();
 
-  public FindPathState(StateMachine stateMachine, CharacterEntity character) : base(stateMachine, character)
+  public FindPathState(StateMachine stateMachine, CharacterEntity character, string animationName) : base(stateMachine, character, animationName)
   {
     _tileDecoder = new TileCommandDecoder(character);
   }

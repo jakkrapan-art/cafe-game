@@ -6,7 +6,7 @@ public class IdleState : CharacterState
 {
   private float _duration = 4f;
   private float _start = 0;
-  public IdleState(StateMachine stateMachine, CharacterEntity character) : base(stateMachine, character)
+  public IdleState(StateMachine stateMachine, CharacterEntity character, string animationName) : base(stateMachine, character, animationName)
   {
   }
 

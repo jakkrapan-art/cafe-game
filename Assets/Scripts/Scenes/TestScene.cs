@@ -11,6 +11,7 @@ public class TestScene : SceneBase
 
   [SerializeField]
   private CharacterEntity _characterEntity = null;
+  public int TestCharacterCount = 10;
 
   protected override void InitialSetup()
   {
@@ -23,7 +24,7 @@ public class TestScene : SceneBase
       if (tile is NormalTile == false || !tile.Walkable) continue;
       _building.SpawnCharacter(_characterEntity, tile);
       spawnCount++;
-    } while (spawnCount < 5);
+    } while (spawnCount < TestCharacterCount);
   }
 
   protected override void SetupCamera()

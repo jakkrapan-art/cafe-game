@@ -10,7 +10,7 @@ public abstract class Entity : MonoBehaviour
   public Tile CurrentTile => _currentTile;
   public StateMachine StateMachine { get; protected set; } = default;
 
-  protected void Awake()
+  protected virtual void Awake()
   {
     _rb = GetComponent<Rigidbody2D>();
   }

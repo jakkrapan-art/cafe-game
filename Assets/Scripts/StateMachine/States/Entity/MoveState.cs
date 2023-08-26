@@ -21,7 +21,7 @@ public class MoveState : CharacterState
   private MoveStateParam param;
 
   private bool _isMoving = false;
-  public MoveState(StateMachine stateMachine, CharacterEntity character, float speed) : base(stateMachine, character)
+  public MoveState(StateMachine stateMachine, CharacterEntity character, string animationName, float speed) : base(stateMachine, character, animationName)
   {
     _moveSpeed = speed;
   }
